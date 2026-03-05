@@ -1,7 +1,7 @@
 import os
 import json
 import dashscope
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from dashscope import Generation, ImageSynthesis, VideoSynthesis
 
@@ -137,7 +137,7 @@ def health():
 
 @app.route('/')
 def index():
-    return send_from_whitespace_file('index.html') 
+    return send_from_directory('.', 'index.html') 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000)
