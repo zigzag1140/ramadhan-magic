@@ -21,10 +21,12 @@
             background-attachment: fixed;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.10), 0px 8px 32px rgba(0, 0, 0, 0.20);
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             border-radius: 24px;
-            border: 0.80px solid rgba(255, 255, 255, 0.20);
         }
         .text-outline {
             -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
@@ -51,7 +53,7 @@
             </h2>
         </div>
 
-        <div class="glass rounded-[24px] p-8 mb-10">
+        <div class="glass rounded-[24px] p-8 shadow-2xl mb-10">
             <textarea id="userInput" placeholder="Lemes nunggu buka puasa..." 
                 class="w-full bg-transparent border-none text-2xl font-light placeholder-white/30 outline-none resize-none h-32"></textarea>
             
