@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramadan Magic ✨</title>
+    <title>Ramadan Magic AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #052E16; margin: 0; overflow-x: hidden; }
-        
-        .bg-magic {
+        .bg-figma {
             background: 
                 radial-gradient(ellipse at 27% 37%, #064E3B 0%, rgba(0, 0, 0, 0) 50%), 
                 radial-gradient(ellipse at 97% 21%, rgba(16, 185, 129, 0.30) 0%, rgba(0, 0, 0, 0) 50%), 
@@ -21,23 +20,19 @@
                 #052E16;
             background-attachment: fixed;
         }
-
-        .glass { 
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255,255,255,0.2); 
-            box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.20);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.10), 0px 8px 32px rgba(0, 0, 0, 0.20);
+            border-radius: 24px;
+            border: 0.80px solid rgba(255, 255, 255, 0.20);
         }
-
-        .text-magic-outline {
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
             color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
-            font-weight: 300;
         }
-
-        .btn-gradient {
+        .btn-magic {
             background: linear-gradient(135deg, #F97316 0%, #F59E0B 50%, #FBBF24 100%);
-            box-shadow: 0px 8px 24px rgba(245, 158, 11, 0.4);
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.30), 0px 0px 40px rgba(245, 158, 11, 0.50);
         }
     </style>
 </head>
@@ -45,36 +40,30 @@
 
     <div class="max-w-2xl mx-auto px-6 py-12 relative z-10">
         <div class="text-center mb-16">
-            <div class="flex items-center justify-center gap-2 mb-2">
-                 <div class="w-6 h-6 border-[1.5px] border-[#FFB900] flex items-center justify-center">
-                    <div class="w-3 h-3 bg-[#FFB900]/30"></div>
-                </div>
-                <h1 class="text-3xl font-light font-[Montserrat] tracking-wide">Ramadan Magic</h1>
-            </div>
-            <p class="text-white/60 text-sm font-light">Transform your moments into magic</p>
+            <h1 class="text-3xl font-light font-[Montserrat] tracking-wide">Ramadan Magic ✨</h1>
+            <p class="text-white/60 text-sm mt-2 font-light">Transform your moments into magic</p>
         </div>
 
         <div class="text-center mb-12">
             <h2 class="text-5xl md:text-6xl font-bold leading-tight">
-                Ubah Curhatan <br> 
-                Ramadanmu <br> 
-                <span class="text-magic-outline italic">Jadi Magic</span>
+                Ubah Curhatan <br> Ramadanmu <br> 
+                <span class="font-light text-[#F59E0B]">Jadi Magic</span>
             </h2>
         </div>
 
-        <div class="glass rounded-[24px] p-8 mb-10">
+        <div class="glass rounded-[24px] p-8 shadow-2xl mb-10">
             <textarea id="userInput" placeholder="Lemes nunggu buka puasa..." 
                 class="w-full bg-transparent border-none text-2xl font-light placeholder-white/30 outline-none resize-none h-32"></textarea>
             
             <div class="flex justify-end mt-4">
                 <button onclick="generateMagic()" id="btnMagic"
-                    class="btn-gradient px-8 py-3 rounded-full font-medium hover:scale-105 transition-transform active:scale-95 flex items-center gap-2">
-                    <span>Create Magic</span> ✨
+                    class="bg-gradient-to-r from-[#F97316] via-[#F59E0B] to-[#FBBF24] px-8 py-3 rounded-full font-medium shadow-[0_8px_24px_rgba(245,158,11,0.4)] hover:scale-105 transition-transform active:scale-95">
+                    Create Magic ✨
                 </button>
             </div>
         </div>
 
-        <div id="resultArea" class="hidden space-y-8 transition-all duration-500 pb-20">
+        <div id="resultArea" class="hidden space-y-8 transition-all duration-500">
             <div class="bg-[#F59E0B]/10 border-l-4 border-[#F59E0B] p-6 rounded-xl">
                 <p id="captionText" class="text-xl italic font-light"></p>
             </div>
@@ -83,8 +72,8 @@
                 <img id="imageResult" class="w-full block" src="" alt="AI Result">
                 <video id="videoResult" class="w-full hidden" controls autoplay loop></video>
                 
-                <div id="statusBadge" class="absolute bottom-4 right-4 bg-black/70 px-4 py-2 rounded-full text-[10px] tracking-widest uppercase hidden border border-white/10">
-                    🎬 Animating your curhatan...
+                <div id="statusBadge" class="absolute bottom-4 right-4 bg-black/60 px-4 py-2 rounded-full text-xs hidden">
+                    🎬 Animating your meme...
                 </div>
             </div>
         </div>
@@ -100,7 +89,7 @@
             const btn = document.getElementById('btnMagic');
             const resultArea = document.getElementById('resultArea');
             
-            btn.innerText = "Chasing the Moon...";
+            btn.innerText = "Processing...";
             btn.disabled = true;
 
             try {
@@ -116,8 +105,6 @@
                 document.getElementById('imageResult').classList.remove('hidden');
                 document.getElementById('videoResult').classList.add('hidden');
                 resultArea.classList.remove('hidden');
-                
-                resultArea.scrollIntoView({ behavior: 'smooth' });
                 
                 btn.innerText = "Create Magic ✨";
                 btn.disabled = false;
@@ -137,23 +124,20 @@
             badge.classList.remove('hidden');
 
             const interval = setInterval(async () => {
-                try {
-                    const res = await fetch(`${API_BASE}/check-video/${taskId}`);
-                    const data = await res.json();
+                const res = await fetch(`${API_BASE}/check-video/${taskId}`);
+                const data = await res.json();
 
-                    if (data.status === 'SUCCEEDED') {
-                        document.getElementById('imageResult').classList.add('hidden');
-                        const video = document.getElementById('videoResult');
-                        video.src = data.video_url;
-                        video.classList.remove('hidden');
-                        badge.classList.add('hidden');
-                        clearInterval(interval);
-                    } else if (data.status === 'FAILED') {
-                        badge.innerText = "❌ Animation Failed";
-                        setTimeout(() => badge.classList.add('hidden'), 3000);
-                        clearInterval(interval);
-                    }
-                } catch (e) { console.log("Still cooking video..."); }
+                if (data.status === 'SUCCEEDED') {
+                    document.getElementById('imageResult').classList.add('hidden');
+                    const video = document.getElementById('videoResult');
+                    video.src = data.video_url;
+                    video.classList.remove('hidden');
+                    badge.classList.add('hidden');
+                    clearInterval(interval);
+                } else if (data.status === 'FAILED') {
+                    badge.innerText = "❌ Video failed to generate";
+                    clearInterval(interval);
+                }
             }, 5000);
         }
     </script>
