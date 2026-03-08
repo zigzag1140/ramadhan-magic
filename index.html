@@ -7,54 +7,85 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Montserrat:wght@300&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #052E16; margin: 0; overflow-x: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); }
-        .bg-magic {
-            background: radial-gradient(ellipse at 27% 37%, #064E3B 0%, rgba(0, 0, 0, 0) 50%),
-                        radial-gradient(ellipse at 97% 21%, rgba(16, 185, 129, 0.3) 0%, rgba(0, 0, 0, 0) 50%),
-                        radial-gradient(ellipse at 52% 99%, #065F46 0%, rgba(0, 0, 0, 0) 50%);
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #052E16; 
+            margin: 0; 
+            min-height: 100vh;
+        }
+        .bg-figma {
+            background: 
+                radial-gradient(ellipse at 27% 37%, #064E3B 0%, rgba(0, 0, 0, 0) 50%), 
+                radial-gradient(ellipse at 97% 21%, rgba(16, 185, 129, 0.30) 0%, rgba(0, 0, 0, 0) 50%), 
+                radial-gradient(ellipse at 52% 99%, #065F46 0%, rgba(0, 0, 0, 0) 50%), 
+                radial-gradient(ellipse at 10% 29%, #052E16 0%, rgba(0, 0, 0, 0) 50%), 
+                radial-gradient(ellipse at 97% 96%, #064E3B 0%, rgba(0, 0, 0, 0) 50%), 
+                radial-gradient(ellipse at 33% 50%, rgba(4, 120, 87, 0.40) 0%, rgba(0, 0, 0, 0) 50%), 
+                radial-gradient(ellipse at 79% 53%, #065F46 0%, rgba(0, 0, 0, 0) 50%), 
+                #052E16;
             background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.10), 0px 8px 32px rgba(0, 0, 0, 0.20);
+            border-radius: 24px;
+            border: 0.80px solid rgba(255, 255, 255, 0.20);
+        }
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+            color: transparent;
+        }
+        .btn-magic {
+            background: linear-gradient(135deg, #F97316 0%, #F59E0B 50%, #FBBF24 100%);
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.30), 0px 0px 40px rgba(245, 158, 11, 0.50);
         }
     </style>
 </head>
-<body class="bg-magic min-h-screen text-white">
+<body class="bg-figma text-white">
 
-    <div class="max-w-2xl mx-auto px-6 py-12 relative z-10">
-        <div class="text-center mb-16">
-            <h1 class="text-3xl font-light font-[Montserrat] tracking-wide">Ramadan Magic ✨</h1>
-            <p class="text-white/60 text-sm mt-2 font-light">Transform your moments into magic</p>
+    <div class="max-w-[672px] mx-auto px-6 py-12">
+        <div class="text-center mb-16 space-y-3">
+            <div class="flex items-center justify-center gap-3">
+                <div class="w-7 h-7 border-[1.75px] border-[#FFB900] flex items-center justify-center">
+                    <div class="w-4 h-4 bg-[#FFB900]/20"></div>
+                </div>
+                <h1 class="text-[30px] font-light font-[Montserrat] leading-9">Ramadan Magic</h1>
+            </div>
+            <p class="text-white/60 text-sm font-light tracking-wide">Transform your moments into magic</p>
         </div>
 
         <div class="text-center mb-12">
-            <h2 class="text-5xl md:text-6xl font-bold leading-tight">
-                Ubah Curhatan <br> Ramadanmu <br> 
-                <span class="font-light text-[#F59E0B]">Jadi Magic</span>
-            </h2>
+            <h2 class="text-[60px] font-bold leading-[66px] mb-2">Ubah Curhatan</h2>
+            <h2 class="text-[60px] font-bold leading-[66px] mb-2">Ramadanmu</h2>
+            <h2 class="text-[60px] font-light leading-[66px] text-outline">Jadi Magic</h2>
         </div>
 
-        <div class="glass rounded-[24px] p-8 shadow-2xl mb-10">
-            <textarea id="userInput" placeholder="Lemes nunggu buka puasa..." 
-                class="w-full bg-transparent border-none text-2xl font-light placeholder-white/30 outline-none resize-none h-32"></textarea>
+        <div class="glass-card p-8 mb-10">
+            <textarea id="userInput" 
+                placeholder="Lemes nunggu buka puasa..." 
+                class="w-full bg-transparent border-none text-[24px] font-light placeholder-white/30 outline-none resize-none h-32 leading-[38.4px]"></textarea>
             
-            <div class="flex justify-end mt-4">
+            <div class="flex justify-end mt-6">
                 <button onclick="generateMagic()" id="btnMagic"
-                    class="bg-gradient-to-r from-[#F97316] via-[#F59E0B] to-[#FBBF24] px-8 py-3 rounded-full font-medium shadow-[0_8px_24px_rgba(245,158,11,0.4)] hover:scale-105 transition-transform active:scale-95">
-                    Create Magic ✨
+                    class="btn-magic px-10 py-4 rounded-full font-medium flex items-center gap-3 hover:scale-105 transition-transform active:scale-95">
+                    <span class="text-base font-medium">Create Magic</span>
+                    <span class="text-xl">✨</span>
                 </button>
             </div>
         </div>
 
-        <div id="resultArea" class="hidden space-y-8 transition-all duration-500">
+        <div id="resultArea" class="hidden space-y-8 pb-20">
             <div class="bg-[#F59E0B]/10 border-l-4 border-[#F59E0B] p-6 rounded-xl">
                 <p id="captionText" class="text-xl italic font-light"></p>
             </div>
 
-            <div class="relative rounded-[24px] overflow-hidden border border-white/20 bg-black/20">
-                <img id="imageResult" class="w-full block" src="" alt="AI Result">
-                <video id="videoResult" class="w-full hidden" controls autoplay loop></video>
+            <div class="relative rounded-[24px] overflow-hidden border border-white/20 bg-black/40">
+                <img id="imageResult" class="w-full h-auto block" src="" alt="AI Result">
+                <video id="videoResult" class="w-full h-auto hidden" controls autoplay loop></video>
                 
-                <div id="statusBadge" class="absolute bottom-4 right-4 bg-black/60 px-4 py-2 rounded-full text-xs hidden">
-                    🎬 Animating your meme...
+                <div id="statusBadge" class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center hidden">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#F59E0B] mb-4"></div>
+                    <p class="text-sm font-light">📽️ Creating Video Animation...</p>
                 </div>
             </div>
         </div>
@@ -65,12 +96,14 @@
 
         async function generateMagic() {
             const msg = document.getElementById('userInput').value;
-            if(!msg) return alert("Isi curhatanmu dulu!");
+            if(!msg) return alert("Tulis curhatanmu dulu!");
 
             const btn = document.getElementById('btnMagic');
             const resultArea = document.getElementById('resultArea');
+            const imageEl = document.getElementById('imageResult');
+            const videoEl = document.getElementById('videoResult');
             
-            btn.innerText = "Processing...";
+            btn.innerHTML = `<span>Processing...</span>`;
             btn.disabled = true;
 
             try {
@@ -81,43 +114,55 @@
                 });
                 const data = await res.json();
 
-                document.getElementById('captionText').innerText = `"${data.caption}"`;
-                document.getElementById('imageResult').src = data.image_url;
-                document.getElementById('imageResult').classList.remove('hidden');
-                document.getElementById('videoResult').classList.add('hidden');
-                resultArea.classList.remove('hidden');
-                
-                btn.innerText = "Create Magic ✨";
-                btn.disabled = false;
+                if(data.status === "success") {
+                    document.getElementById('captionText').innerText = `"${data.caption}"`;
+                    imageEl.src = data.image_url;
+                    imageEl.classList.remove('hidden');
+                    videoEl.classList.add('hidden');
+                    resultArea.classList.remove('hidden');
+                    
+                    resultArea.scrollIntoView({ behavior: 'smooth' });
 
-                if (data.video_task_id) {
-                    pollVideo(data.video_task_id);
+                    if (data.video_task_id) {
+                        pollVideo(data.video_task_id);
+                    }
+                } else {
+                    alert("Gagal: " + data.message);
                 }
             } catch (err) {
-                alert("Error connecting to backend!");
-                btn.innerText = "Create Magic ✨";
+                console.error(err);
+                alert("Koneksi ke server Alibaba gagal!");
+            } finally {
+                btn.innerHTML = `<span>Create Magic</span><span>✨</span>`;
                 btn.disabled = false;
             }
         }
 
         async function pollVideo(taskId) {
             const badge = document.getElementById('statusBadge');
+            const imageEl = document.getElementById('imageResult');
+            const videoEl = document.getElementById('videoResult');
+            
             badge.classList.remove('hidden');
 
             const interval = setInterval(async () => {
-                const res = await fetch(`${API_BASE}/check-video/${taskId}`);
-                const data = await res.json();
+                try {
+                    const res = await fetch(`${API_BASE}/check-video/${taskId}`);
+                    const data = await res.json();
 
-                if (data.status === 'SUCCEEDED') {
-                    document.getElementById('imageResult').classList.add('hidden');
-                    const video = document.getElementById('videoResult');
-                    video.src = data.video_url;
-                    video.classList.remove('hidden');
-                    badge.classList.add('hidden');
-                    clearInterval(interval);
-                } else if (data.status === 'FAILED') {
-                    badge.innerText = "❌ Video failed to generate";
-                    clearInterval(interval);
+                    if (data.status === 'SUCCEEDED') {
+                        imageEl.classList.add('hidden');
+                        videoEl.src = data.video_url;
+                        videoEl.classList.remove('hidden');
+                        badge.classList.add('hidden');
+                        clearInterval(interval);
+                    } else if (data.status === 'FAILED') {
+                        alert("Gagal membuat video, tapi gambarmu sudah siap!");
+                        badge.classList.add('hidden');
+                        clearInterval(interval);
+                    }
+                } catch (e) {
+                    console.log("Polling error...");
                 }
             }, 5000);
         }
