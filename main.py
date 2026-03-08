@@ -4,6 +4,7 @@ import dashscope
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from dashscope import Generation, ImageSynthesis, VideoSynthesis
+from flask import make_response
 
 app = Flask(__name__)
 CORS(app)
@@ -137,7 +138,18 @@ def health():
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html') 
+    try:
+        with open('index.html', 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        response = make_response(content)
+        
+        response.headers['Content-Type'] = 'text/html'
+        response.headers['Content-Disposition'] = 'inline'
+        
+        return response
+    except Exception as e:
+        return f"Waduh, file index.html nggak ketemu nih! Detail: {str(e)}", 404 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000)
