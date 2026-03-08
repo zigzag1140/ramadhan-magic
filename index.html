@@ -15,8 +15,6 @@
                 radial-gradient(ellipse at 52% 99%, #065F46 0%, rgba(0, 0, 0, 0) 50%), 
                 radial-gradient(ellipse at 10% 29%, #052E16 0%, rgba(0, 0, 0, 0) 50%), 
                 radial-gradient(ellipse at 97% 96%, #064E3B 0%, rgba(0, 0, 0, 0) 50%), 
-                radial-gradient(ellipse at 33% 50%, rgba(4, 120, 87, 0.40) 0%, rgba(0, 0, 0, 0) 50%), 
-                radial-gradient(ellipse at 79% 53%, #065F46 0%, rgba(0, 0, 0, 0) 50%), 
                 #052E16;
             background-attachment: fixed;
         }
@@ -25,7 +23,6 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
         .text-outline {
             -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
@@ -33,8 +30,21 @@
         }
         .btn-magic {
             background: linear-gradient(135deg, #F97316 0%, #F59E0B 50%, #FBBF24 100%);
-            box-shadow: 0px 8px 24px rgba(245, 158, 11, 0.4), 0px 0px 40px rgba(245, 158, 11, 0.3);
+            box-shadow: 0px 8px 24px rgba(245, 158, 11, 0.4);
         }
+        .btn-download {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-download:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        /* Animasi Loading */
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
 <body class="bg-magic min-h-screen text-white">
@@ -42,7 +52,6 @@
     <div class="max-w-2xl mx-auto px-6 py-12 relative z-10">
         <div class="text-center mb-16">
             <h1 class="text-3xl font-light font-[Montserrat] tracking-wide">Ramadan Magic ✨</h1>
-            <p class="text-white/60 text-sm mt-2 font-light">Transform your moments into magic</p>
         </div>
 
         <div class="text-center mb-12">
@@ -58,39 +67,57 @@
             
             <div class="flex justify-end mt-4">
                 <button onclick="generateMagic()" id="btnMagic"
-                    class="btn-magic px-8 py-3 rounded-full font-medium hover:scale-105 transition-transform active:scale-95">
+                    class="btn-magic px-8 py-3 rounded-full font-medium hover:scale-105 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
                     Create Magic ✨
                 </button>
             </div>
         </div>
 
-        <div id="resultArea" class="hidden space-y-8 transition-all duration-500">
-            <div class="bg-[#F59E0B]/10 border-l-4 border-[#F59E0B] p-6 rounded-xl">
+        <div id="resultArea" class="hidden space-y-6 transition-all duration-500">
+            
+            <div class="bg-white/5 border-l-4 border-[#F59E0B] p-6 rounded-xl glass">
                 <p id="captionText" class="text-xl italic font-light"></p>
             </div>
 
-            <div class="relative rounded-[24px] overflow-hidden border border-white/20 bg-black/20">
+            <div class="relative rounded-[24px] overflow-hidden border border-white/20 bg-black/40 shadow-2xl">
                 <img id="imageResult" class="w-full block" src="" alt="AI Result">
-                <video id="videoResult" class="w-full hidden" controls autoplay loop></video>
+                <video id="videoResult" class="w-full hidden" controls loop playsinline></video>
                 
-                <div id="statusBadge" class="absolute bottom-4 right-4 bg-black/60 px-4 py-2 rounded-full text-xs hidden">
-                    🎬 Animating your meme...
+                <div id="statusBadge" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center hidden">
+                    <div class="w-12 h-12 border-4 border-[#F59E0B] border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <p class="text-sm font-medium">🎬 Sedang menganimasi momenmu...</p>
+                    <p class="text-[10px] text-white/50 mt-1">(Biasanya 1-3 menit, jangan direfresh)</p>
                 </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button id="btnAnimate" onclick="startAnimation()" 
+                    class="flex-1 bg-[#F59E0B] py-4 rounded-2xl font-bold hover:bg-[#D97706] transition-all flex items-center justify-center gap-2">
+                    🎥 Ubah Jadi Animasi 3D
+                </button>
+                <button onclick="downloadMedia()" 
+                    class="btn-download px-8 py-4 rounded-2xl font-medium flex items-center justify-center gap-2 transition-all">
+                    📥 Simpan
+                </button>
             </div>
         </div>
     </div>
 
     <script>
         const API_BASE = "https://ramadanmagic-ai-mienccnecg.cn-hangzhou.fcapp.run";
+        let currentTaskId = null;
+        let lastMsg = "";
 
         async function generateMagic() {
             const msg = document.getElementById('userInput').value;
             if(!msg) return alert("Isi curhatanmu dulu!");
+            lastMsg = msg;
 
             const btn = document.getElementById('btnMagic');
             const resultArea = document.getElementById('resultArea');
+            const btnAnimate = document.getElementById('btnAnimate');
             
-            btn.innerText = "Processing...";
+            btn.innerText = "Menenun Keajaiban...";
             btn.disabled = true;
 
             try {
@@ -101,22 +128,51 @@
                 });
                 const data = await res.json();
 
+                if(data.error) throw new Error(data.error);
+
                 document.getElementById('captionText').innerText = `"${data.caption}"`;
                 document.getElementById('imageResult').src = data.image_url;
                 document.getElementById('imageResult').classList.remove('hidden');
                 document.getElementById('videoResult').classList.add('hidden');
+                document.getElementById('statusBadge').classList.add('hidden');
+                btnAnimate.style.display = 'flex';
+                btnAnimate.innerText = "🎥 Ubah Jadi Animasi 3D";
+                btnAnimate.disabled = false;
+                
                 resultArea.classList.remove('hidden');
+                resultArea.scrollIntoView({ behavior: 'smooth' });
                 
                 btn.innerText = "Create Magic ✨";
                 btn.disabled = false;
+            } catch (err) {
+                alert("Waduh, AI-nya lagi buka puasa. Coba lagi ya!");
+                btn.innerText = "Create Magic ✨";
+                btn.disabled = false;
+            }
+        }
 
+        async function startAnimation() {
+            const btnAnimate = document.getElementById('btnAnimate');
+            const imageUrl = document.getElementById('imageResult').src;
+            
+            btnAnimate.innerText = "Meminta Izin AI...";
+            btnAnimate.disabled = true;
+
+            try {
+                const res = await fetch(`${API_BASE}/animate`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ image_url: imageUrl, msg: lastMsg })
+                });
+                const data = await res.json();
+                
                 if (data.video_task_id) {
+                    btnAnimate.style.display = 'none'; 
                     pollVideo(data.video_task_id);
                 }
             } catch (err) {
-                alert("Error connecting to backend!");
-                btn.innerText = "Create Magic ✨";
-                btn.disabled = false;
+                alert("Gagal menganimasi gambar.");
+                btnAnimate.disabled = false;
             }
         }
 
@@ -125,21 +181,47 @@
             badge.classList.remove('hidden');
 
             const interval = setInterval(async () => {
-                const res = await fetch(`${API_BASE}/check-video/${taskId}`);
-                const data = await res.json();
+                try {
+                    const res = await fetch(`${API_BASE}/check-video/${taskId}`);
+                    const data = await res.json();
 
-                if (data.status === 'SUCCEEDED') {
-                    document.getElementById('imageResult').classList.add('hidden');
-                    const video = document.getElementById('videoResult');
-                    video.src = data.video_url;
-                    video.classList.remove('hidden');
-                    badge.classList.add('hidden');
-                    clearInterval(interval);
-                } else if (data.status === 'FAILED') {
-                    badge.innerText = "❌ Video failed to generate";
-                    clearInterval(interval);
-                }
+                    if (data.status === 'SUCCEEDED') {
+                        document.getElementById('imageResult').classList.add('hidden');
+                        const video = document.getElementById('videoResult');
+                        video.src = data.video_url;
+                        video.classList.remove('hidden');
+                        video.play();
+                        badge.classList.add('hidden');
+                        clearInterval(interval);
+                    } else if (data.status === 'FAILED') {
+                        alert("Gagal membuat animasi. Mungkin prompt terlalu sensitif.");
+                        badge.classList.add('hidden');
+                        clearInterval(interval);
+                    }
+                } catch (e) { console.error("Polling error"); }
             }, 5000);
+        }
+
+        async function downloadMedia() {
+            const video = document.getElementById('videoResult');
+            const img = document.getElementById('imageResult');
+            const url = !video.classList.contains('hidden') ? video.src : img.src;
+            
+            if(!url) return;
+
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = `RamadanMagic_${Date.now()}${url.includes('mp4') ? '.mp4' : '.png'}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (e) {
+                window.open(url, '_blank');
+            }
         }
     </script>
 </body>
